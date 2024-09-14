@@ -34,6 +34,90 @@ body {
 }
 
 .sticky-card {
-  // padding-top: calc(var(--index) * 2.5rem);
   top: calc(var(--index) * 4rem);
+}
+
+@keyframes blob {
+  0% {
+    transform: scale(1) translate(100px, 100px);
+  }
+  50% {
+    transform: scale(1.1) translate(120px, 120px);
+  }
+  100% {
+    transform: scale(1) translate(100px, 100px);
+  }
+}
+
+
+
+@keyframes floating {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100vh); /* Moves the blob upwards off the screen */
+    opacity: 0; /* Fades out as it moves */
+  }
+}
+
+.animate-floating {
+  animation: floating linear infinite;
+  position: absolute;
+  border-radius: 9999px; /* To ensure it's a circle */
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 1.2s ease-in-out forwards;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animate-blink {
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+.bg-gradient-to-r {
+  background: linear-gradient(to right, var(--tw-gradient-stops));
+}
+
+/* Custom shadow effect for neon-like glow */
+.hover\:shadow-neon:hover {
+  box-shadow: 0 0 10px 5px var(--tw-shadow-color);
+}
+
+/* Fix for the personalData being covered */
+.bg-clip-text {
+  background-clip: text;
+}
+
+.text-transparent {
+  color: transparent;
+}
+
+h1 span {
+  z-index: 10; 
+  position: relative; 
 }

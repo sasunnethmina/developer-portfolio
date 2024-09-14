@@ -1,7 +1,7 @@
 "use client";
 // @flow strict
 import { isValidEmail } from '@/utils/check-email';
-import axios from 'axios';
+import emailjs from '@emailjs/browser';
 import { useState } from 'react';
 import { TbMailForward } from "react-icons/tb";
 import { toast } from 'react-toastify';
@@ -22,6 +22,7 @@ function ContactWithoutCaptcha() {
 
   const handleSendMail = async (e) => {
     e.preventDefault();
+
     if (!userInput.email || !userInput.message || !userInput.name) {
       setError({ ...error, required: true });
       return;
@@ -29,27 +30,40 @@ function ContactWithoutCaptcha() {
       return;
     } else {
       setError({ ...error, required: false });
-    };
+    }
 
     const serviceID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
     const templateID = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
-    const options = { publicKey: process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY };
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
     try {
-      const res = await emailjs.send(serviceID, templateID, userInput, options);
-      const teleRes = await axios.post(`${process.env.NEXT_PUBLIC_APP_URL}/api/contact`, userInput);
+      // Ensure the correct template parameters
+      const templateParams = {
+        from_name: userInput.name,     // Sender's Name
+        from_email: userInput.email,   // Sender's Email
+        message: userInput.message,    // Message content
+      };
 
-      if (res.status === 200 || teleRes.status === 200) {
+      const res = await emailjs.send(
+        serviceID,
+        templateID,
+        templateParams,  // Sending userInput as template params
+        publicKey
+      );
+
+      if (res.status === 200) {
         toast.success('Message sent successfully!');
         setUserInput({
           name: '',
           email: '',
           message: '',
         });
-      };
+      } else {
+        toast.error('Failed to send message!');
+      }
     } catch (error) {
-      toast.error(error?.text || error);
-    };
+      toast.error(error?.text || 'An error occurred');
+    }
   };
 
   return (
@@ -110,7 +124,7 @@ function ContactWithoutCaptcha() {
           <div className="flex flex-col items-center gap-2">
             {error.required &&
               <p className="text-sm text-red-400">
-                Email and Message are required!
+                Email, Name, and Message are required!
               </p>
             }
             <button
@@ -126,6 +140,6 @@ function ContactWithoutCaptcha() {
       </div>
     </div>
   );
-};
+}
 
 export default ContactWithoutCaptcha;
