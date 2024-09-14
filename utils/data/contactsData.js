@@ -3,7 +3,7 @@ export const contactsData = {
   phone: "+94765958539",
   address: "130 Vincent villa templeroad, Katunayake ",
   github: "https://github.com/sasunnethmina",
-  linkedIn: "www.linkedin.com/in/sasun-nethmina",
+  linkedIn: "https://www.linkedin.com/in/sasun-nethmina/",
   twitter: "https://twitter.com/sasunnethmina",
   devUsername: "sasun nethmina",
 };
